@@ -1,0 +1,88 @@
+---
+interface Props {
+	text: string;
+	fontSize?: string;
+}
+
+const padding = "0.7rem 1rem";
+const shapeColor = "#B5FD14";
+const shadowColor = "#ff2e97";
+const leadScale = 1.8;
+
+const {
+	text,
+	fontSize = "1.8rem",
+} = Astro.props;
+
+const [lead = '', ...tail] = Array.from(text);
+---
+
+<button class="btn">
+	<span class="btn-shape"></span>
+	<span class="btn-text"><span class="lead">{lead}</span>{tail.join('')}</span>
+</button>
+
+<style define:vars={{
+	padding,
+	shapeColor,
+	shadowColor,
+	fontSize,
+	leadScale
+}}>
+	.btn {
+		--lift: 6px;
+		--clip: polygon(0 10%, 100% 0, 100% 100%, 0 90%);
+
+		position: relative;
+		display: inline-block;
+		overflow: visible;
+		border: none;
+		background: none;
+		padding: var(--padding);
+		color: black;
+		font-family: sans-serif;
+		font-size: var(--fontSize);
+		font-weight: bold;
+		line-height: normal;
+		transform: translate(calc(var(--lift) * -1), calc(var(--lift) * -1));
+		transition: transform .2s;
+	}
+	.btn:hover {
+		cursor: pointer;
+		--lift: 8px;
+	}
+	.btn:active {
+		--lift: 0px;
+	}
+	.btn-shape {
+		position: absolute;
+		inset: 0;
+		/*clip-path: var(--clip);*/
+		background-color: var(--shapeColor);
+	}
+	.btn-text {
+		position: relative;
+	}
+	.lead {
+		--lead-stroke: 0.08em;
+		font-size: calc(1em * var(--leadScale));
+		line-height: 0;
+		-webkit-text-stroke: var(--lead-stroke) var(--shapeColor);
+		text-shadow:
+			calc(var(--lead-stroke) / -5) 0 var(--shapeColor),
+			0 calc(var(--lead-stroke) / 5) var(--shapeColor),
+			calc(var(--lead-stroke) / 5) 0 var(--shapeColor),
+			0 calc(var(--lead-stroke) / -5) var(--shapeColor);
+		paint-order: stroke;
+		margin-right: calc(var(--lead-stroke) * -1);
+	}
+	.btn::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		/*clip-path: var(--clip);*/
+		background-color: var(--shadowColor);
+		transform: translate(var(--lift), var(--lift));
+		transition: transform .2s;
+	}
+</style>
