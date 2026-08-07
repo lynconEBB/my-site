@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import NavBar from "../components/NavBar.astro";
+import Font from "astro/components/Font.astro";
 ---
 <!doctype html>
 <html lang="en">
@@ -10,7 +11,8 @@ import NavBar from "../components/NavBar.astro";
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<Font cssVariable="--font-oxanium"/>
+		<title>Techlyn</title>
 	</head>
 	<body>
 		<NavBar/>

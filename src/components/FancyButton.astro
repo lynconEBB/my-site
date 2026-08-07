@@ -2,9 +2,13 @@
 interface Props {
 	text: string;
 	fontSize?: string;
+	padding?: string;
+	tlCorner?: string;
+	trCorner?: string;
+	blCorner?: string;
+	brCorner?: string;
 }
 
-const padding = "0.7rem 1rem";
 const shapeColor = "#B5FD14";
 const shadowColor = "#ff2e97";
 const leadScale = 1.8;
@@ -12,6 +16,12 @@ const leadScale = 1.8;
 const {
 	text,
 	fontSize = "1.8rem",
+	padding = "0",
+	tlCorner = "0 0",
+	trCorner = "100% 0",
+	brCorner = "100% 100%",
+	blCorner = "0 100%",
+
 } = Astro.props;
 
 const [lead = '', ...tail] = Array.from(text);
@@ -19,7 +29,9 @@ const [lead = '', ...tail] = Array.from(text);
 
 <button class="btn">
 	<span class="btn-shape"></span>
-	<span class="btn-text"><span class="lead">{lead}</span>{tail.join('')}</span>
+	<span class="btn-text">
+		<span class="lead">{lead}</span>
+		{tail.join('')}</span>
 </button>
 
 <style define:vars={{
@@ -27,11 +39,15 @@ const [lead = '', ...tail] = Array.from(text);
 	shapeColor,
 	shadowColor,
 	fontSize,
-	leadScale
+	leadScale,
+	tlCorner,
+	trCorner,
+	brCorner,
+	blCorner
 }}>
 	.btn {
 		--lift: 6px;
-		--clip: polygon(0 10%, 100% 0, 100% 100%, 0 90%);
+		--clip: polygon(var(--tlCorner), var(--trCorner), var(--brCorner), var(--blCorner));
 
 		position: relative;
 		display: inline-block;
@@ -40,7 +56,7 @@ const [lead = '', ...tail] = Array.from(text);
 		background: none;
 		padding: var(--padding);
 		color: black;
-		font-family: sans-serif;
+		font-family: var(--font-oxanium), sans-serif;
 		font-size: var(--fontSize);
 		font-weight: bold;
 		line-height: normal;
@@ -57,7 +73,7 @@ const [lead = '', ...tail] = Array.from(text);
 	.btn-shape {
 		position: absolute;
 		inset: 0;
-		/*clip-path: var(--clip);*/
+		clip-path: var(--clip);
 		background-color: var(--shapeColor);
 	}
 	.btn-text {
@@ -80,7 +96,7 @@ const [lead = '', ...tail] = Array.from(text);
 		content: "";
 		position: absolute;
 		inset: 0;
-		/*clip-path: var(--clip);*/
+		clip-path: var(--clip);
 		background-color: var(--shadowColor);
 		transform: translate(var(--lift), var(--lift));
 		transition: transform .2s;
