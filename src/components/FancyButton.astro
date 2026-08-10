@@ -1,6 +1,7 @@
 ---
 interface Props {
 	text: string;
+	leadNudge?: number;
 	fontSize?: string;
 	padding?: string;
 	tlCorner?: string;
@@ -15,8 +16,9 @@ const leadScale = 1.8;
 
 const {
 	text,
-	fontSize = "1.8rem",
-	padding = "0",
+	fontSize = "1.5rem",
+	leadNudge = 0,
+	padding = "0.5rem 2rem",
 	tlCorner = "0 0",
 	trCorner = "100% 0",
 	brCorner = "100% 100%",
@@ -38,6 +40,7 @@ const [lead = '', ...tail] = Array.from(text);
 	padding,
 	shapeColor,
 	shadowColor,
+	leadNudge,
 	fontSize,
 	leadScale,
 	tlCorner,
@@ -68,6 +71,7 @@ const [lead = '', ...tail] = Array.from(text);
 		--lift: 8px;
 	}
 	.btn:active {
+		cursor: pointer;
 		--lift: 0px;
 	}
 	.btn-shape {
@@ -80,7 +84,7 @@ const [lead = '', ...tail] = Array.from(text);
 		position: relative;
 	}
 	.lead {
-		--lead-stroke: 0.08em;
+		--lead-stroke: 0.2em;
 		font-size: calc(1em * var(--leadScale));
 		line-height: 0;
 		-webkit-text-stroke: var(--lead-stroke) var(--shapeColor);
@@ -90,7 +94,7 @@ const [lead = '', ...tail] = Array.from(text);
 			calc(var(--lead-stroke) / 5) 0 var(--shapeColor),
 			0 calc(var(--lead-stroke) / -5) var(--shapeColor);
 		paint-order: stroke;
-		margin-right: calc(var(--lead-stroke) * -1);
+		margin-right: calc(var(--lead-stroke) * -1 * var(--leadNudge));
 	}
 	.btn::before {
 		content: "";

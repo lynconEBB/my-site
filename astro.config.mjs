@@ -10,9 +10,22 @@ export default defineConfig({
         options: {
             variants:[{
                 src: ["./src/assets/fonts/oxanium.ttf"],
-                weight: "200 8000",
+                weight: "200 800",
+                style: "normal",
+            }]
+        }
+    },
+    {
+        provider: fontProviders.local(),
+        name: "Anton",
+        cssVariable: "--font-anton",
+        options: {
+            variants:[{
+                src: ["./src/assets/fonts/anton.ttf"],
+                weight: "normal",
                 style: "normal",
             }]
         }
     }]
+
 });

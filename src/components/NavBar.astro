@@ -3,9 +3,9 @@ import FancyButton from "./FancyButton.astro";
 ---
 
 <nav>
-    <FancyButton text="About" padding="0.5rem"/>
-    <FancyButton text="Projects"/>
-    <FancyButton text="Blog"/>
+    <FancyButton text="About" trCorner="97% 15%" blCorner="5% 100%" brCorner="100% 90%"/>
+    <FancyButton text="Projects" tlCorner="2% 15%" trCorner="95% 0" blCorner="0 90%" leadNudge={0.5}/>
+    <FancyButton text="Blog" tlCorner="3% 0" trCorner="100% 6%" brCorner="97% 100%" blCorner="0 94%"/>
 </nav>
 
 <style>
