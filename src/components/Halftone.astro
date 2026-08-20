@@ -1,0 +1,68 @@
+---
+
+---
+
+<script>
+    const drawCircle = (ctx: CanvasRenderingContext2D, x: number, y: number, radius: number ) => {
+        ctx.fillStyle = "cyan";
+        ctx.beginPath();
+        ctx.arc(x,y,radius,0, 2 * Math.PI);
+        ctx.fill();
+    }
+
+    const fillWithBalls = (ctx: CanvasRenderingContext2D, radius: number, gap: number = 0, targetAlpha = 0) => {
+        let x = radius;
+        let y = ctx.canvas.height - radius;
+        let step = radius * 2 + gap;
+        let currentRadius = radius;
+
+        const minimumVisibleRadius = 1;
+        const minRadius = Math.max(radius * targetAlpha, minimumVisibleRadius);
+        console.log(minRadius);
+        const rows = Math.ceil(ctx.canvas.height / step);
+        const decreaseFactor = Math.pow(minRadius / radius, 1 / (rows - 1));
+
+        for (let i = 0; i < rows; i++) {
+            for (let i = 0; i < ctx.canvas.width / step; i++) {
+                drawCircle(ctx, x, y, currentRadius);
+                x += step;
+            }
+            if (i % 2 == 0) {
+                x = 0;
+            } else {
+                drawCircle(ctx, x, y, currentRadius);
+                x = radius;
+            }
+            y -= step;
+            currentRadius *= decreaseFactor;
+        }
+    }
+    const init = () => {
+        const canvas = document.querySelector("#halftone-canvas") as HTMLCanvasElement;
+        if (!canvas)
+            return;
+        const ctx = canvas.getContext("2d");
+
+        if (ctx) {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+
+            //ctx.fillRect(0,0, canvas.width, canvas.height);
+            fillWithBalls(ctx, 10, 2, 0)
+        }
+    }
+    init();
+
+</script>
+
+<canvas id="halftone-canvas">
+
+</canvas>
+
+<style>
+    canvas {
+        width: 270px;
+        height: 200px;
+    }
+
+</style>

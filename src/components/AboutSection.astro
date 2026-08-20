@@ -1,0 +1,82 @@
+---
+
+---
+
+<script>
+    const drawDivider = (ctx: CanvasRenderingContext2D, pointsUp = false) => {
+        ctx.canvas.width = ctx.canvas.clientWidth;
+        ctx.canvas.height = ctx.canvas.clientHeight;
+
+        const tiltHeight = 30;
+        const solidBandHeight = 20;
+        const getTilt = (x: number) => (x / ctx.canvas.width) * tiltHeight;
+        const getBaseline = (x: number) => pointsUp
+            ? ctx.canvas.height - solidBandHeight - tiltHeight + getTilt(x)
+            : solidBandHeight + getTilt(x);
+        const toothDirection = pointsUp ? -1 : 1;
+
+        ctx.shadowColor = "rgba(0, 0, 0, 0.2)";
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = pointsUp ? -6 : 6;
+        ctx.fillStyle = "#0A193B";
+        ctx.beginPath();
+        ctx.moveTo(0, getBaseline(0))
+        let x = 0;
+        while (x < ctx.canvas.width) {
+            x += 25;
+            ctx.lineTo(x, getBaseline(x) + 20 * toothDirection);
+            x += 25;
+            ctx.lineTo(x, getBaseline(x));
+        }
+        if (pointsUp) {
+            ctx.lineTo(ctx.canvas.width, ctx.canvas.height);
+            ctx.lineTo(0, ctx.canvas.height);
+        } else {
+            ctx.lineTo(ctx.canvas.width, 0);
+            ctx.lineTo(0, 0);
+        }
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    const init = () => {
+        const canvases = Array.from(
+            document.querySelectorAll<HTMLCanvasElement>(".custom-divider"),
+        );
+        canvases.forEach((canvas, index) => {
+            if (!canvas)
+                return;
+            const ctx = canvas.getContext("2d");
+            if (!ctx)
+                return;
+
+            const resizeObserver = new ResizeObserver(() => {
+                drawDivider(ctx, index === 1);
+            })
+            resizeObserver.observe(canvas);
+            drawDivider(ctx, index === 1);
+        });
+    }
+    init();
+</script>
+
+<section>
+    <canvas class="custom-divider"></canvas>
+    <h1>Sobre mim</h1>
+    <canvas class="custom-divider"></canvas>
+
+</section>
+
+<style>
+    section {
+        margin: 0;
+        padding: 0;
+        background-color: #B5FD14;
+    }
+    .custom-divider {
+        display: block;
+        width: 100%;
+        height: 100px;
+    }
+</style>
