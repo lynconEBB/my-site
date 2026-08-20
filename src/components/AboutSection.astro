@@ -1,5 +1,7 @@
 ---
-
+import Checker from "./Checker.astro";
+import star from "../assets/star.svg";
+import Halftone from "./Halftone.astro";
 ---
 
 <script>
@@ -58,21 +60,73 @@
             drawDivider(ctx, index === 1);
         });
     }
+
     init();
 </script>
 
 <section>
     <canvas class="custom-divider"></canvas>
-    <h1>Sobre mim</h1>
+    <div class="container">
+        <div class="col">
+            <div class="heading">
+                <h1>About me</h1>
+                <Checker squareSize={5} height="10px"/>
+            </div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec  condimentum erat. Vivamus interdum lobortis malesuada. Morbi lacinia  arcu ac lectus commodo, at viverra dui pretium. Cras iaculis lorem  aliquam auctor molestie. Vestibulum accumsan dignissim imperdiet.</p>
+        </div>
+        <div class="col detail">
+            <Halftone class="my-halftone"/>
+        </div>
+    </div>
     <canvas class="custom-divider"></canvas>
 
 </section>
 
 <style>
+    :global(.my-halftone) {
+        position: absolute;
+        width: 100px;
+        mask-image: url("../assets/star.svg");
+        mask-size: contain;
+        mask-position: center;
+        mask-repeat: no-repeat
+    }
     section {
-        margin: 0;
-        padding: 0;
         background-color: #B5FD14;
+    }
+    .container {
+        width: min(100%, 800px);
+        display: flex;
+        padding: 2rem;
+        margin-inline: auto;
+        box-sizing: border-box;
+    }
+    .col {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+    .detail {
+        height: 300px;
+        position: relative;
+    }
+    @media (max-width: 640px) {
+        .container {
+            flex-direction: column;
+        }
+        .col {
+            width: 100%;
+        }
+    }
+    .heading {
+        display: inline-block;
+        position: relative;
+    }
+    .heading h1 {
+        font-family: var(--font-anton),sans-serif;
+        margin: 0 0 -5px;
+    }
+    p {
+        font-family: "sans-serif";
     }
     .custom-divider {
         display: block;

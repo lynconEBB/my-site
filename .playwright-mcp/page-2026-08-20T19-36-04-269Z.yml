@@ -1,0 +1,9 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - button "About" [ref=e3]
+    - button "Projects" [ref=e6]
+    - button "Blog" [ref=e9]
+  - heading "LYNCON BAEZ" [level=1] [ref=e13]
+  - generic [ref=e17]:
+    - heading "About me" [level=1] [ref=e19]
+    - paragraph [ref=e21]: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec condimentum erat. Vivamus interdum lobortis malesuada. Morbi lacinia arcu ac lectus commodo, at viverra dui pretium. Cras iaculis lorem aliquam auctor molestie. Vestibulum accumsan dignissim imperdiet.

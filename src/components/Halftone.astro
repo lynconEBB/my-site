@@ -1,16 +1,58 @@
 ---
+interface Props {
+    color?: string,
+    bgColor?: string,
+    radius?: number,
+    gap?: number,
+    class?: string,
+}
 
+const {
+    class: className,
+    color = "#0A193B",
+    bgColor = "#ff2e97",
+    gap = 2,
+    radius = 5
+} = Astro.props
 ---
 
+<canvas
+        class:list={["halftone-canvas", className]}
+        data-color={color}
+        data-bg-color={bgColor}
+        data-gap={gap}
+        data-radius={radius}>
+</canvas>
 <script>
+    const halftones = Array.from(document.querySelectorAll<HTMLCanvasElement>(".halftone-canvas"))
+        .flatMap(canvas => {
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return [];
+
+            return [{
+                canvas,
+                ctx,
+                gap: Number(canvas.dataset.gap) || 2,
+                radius: Number(canvas.dataset.radius) || 4,
+                color: canvas.dataset.color || "#0A193B",
+                bgColor: canvas.dataset.bgColor || "#ff2e97",
+            }];
+        });
+
+
     const drawCircle = (ctx: CanvasRenderingContext2D, x: number, y: number, radius: number ) => {
-        ctx.fillStyle = "cyan";
         ctx.beginPath();
         ctx.arc(x,y,radius,0, 2 * Math.PI);
         ctx.fill();
     }
 
-    const fillWithBalls = (ctx: CanvasRenderingContext2D, radius: number, gap: number = 0, targetAlpha = 0) => {
+    const fillWithBalls = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, color: string, bgColor:string,  radius: number, gap: number = 0, targetAlpha = 0) => {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
         let x = radius;
         let y = ctx.canvas.height - radius;
         let step = radius * 2 + gap;
@@ -18,10 +60,10 @@
 
         const minimumVisibleRadius = 1;
         const minRadius = Math.max(radius * targetAlpha, minimumVisibleRadius);
-        console.log(minRadius);
         const rows = Math.ceil(ctx.canvas.height / step);
         const decreaseFactor = Math.pow(minRadius / radius, 1 / (rows - 1));
 
+        ctx.fillStyle = color;
         for (let i = 0; i < rows; i++) {
             for (let i = 0; i < ctx.canvas.width / step; i++) {
                 drawCircle(ctx, x, y, currentRadius);
@@ -37,30 +79,18 @@
             currentRadius *= decreaseFactor;
         }
     }
-    const init = () => {
-        const canvas = document.querySelector("#halftone-canvas") as HTMLCanvasElement;
-        if (!canvas)
-            return;
-        const ctx = canvas.getContext("2d");
 
-        if (ctx) {
-            canvas.width = canvas.clientWidth;
-            canvas.height = canvas.clientHeight;
-
-            //ctx.fillRect(0,0, canvas.width, canvas.height);
-            fillWithBalls(ctx, 10, 2, 0)
-        }
-    }
-    init();
-
+    halftones.forEach(({canvas, ctx, radius, gap, color, bgColor}) => {
+        const resizeObserver = new ResizeObserver(() => {
+            fillWithBalls(canvas, ctx, color, bgColor, radius, gap, 0);
+        })
+        resizeObserver.observe(canvas);
+        fillWithBalls(canvas, ctx, color, bgColor, radius, gap, 0);
+    });
 </script>
 
-<canvas id="halftone-canvas">
-
-</canvas>
-
 <style>
-    canvas {
+    .halftone-canvas {
         width: 270px;
         height: 200px;
     }

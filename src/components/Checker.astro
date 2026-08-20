@@ -1,0 +1,82 @@
+---
+interface Props {
+    squareSize?: number;
+    panSpeed?: number;
+    height?: string;
+}
+
+const {
+    squareSize = 10,
+    panSpeed = 0,
+    height = "20px"
+} = Astro.props;
+---
+
+<canvas class="checker-effect"
+        data-square-size={squareSize}
+        data-pan-speed={panSpeed}>
+</canvas>
+
+<script>
+    let checkers = Array.from(
+        document.querySelectorAll<HTMLCanvasElement>(".checker-effect"))
+        .flatMap(canvas => {
+            const ctx = canvas.getContext("2d");
+            if(!ctx) return [];
+
+            return [{
+                canvas,
+                ctx,
+                squareSize: Number(canvas.dataset.squareSize) || 10,
+                panSpeed: Number(canvas.dataset.panSpeed) || 0,
+            }]
+        });
+
+    checkers.forEach(({canvas}) => {
+        const resizeObserver = new ResizeObserver(() => {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+        })
+        resizeObserver.observe(canvas);
+    });
+
+    const drawCheckerRow = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, squareSize: number, offset: number ) => {
+        ctx.fillStyle = "#ff2e97";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "black";
+        let y = 0;
+        let row = 0;
+        while (y < ctx.canvas.height) {
+            let x = (row % 2 == 0 ? 0 : squareSize) - squareSize * 2 + offset;
+            while (x < ctx.canvas.width) {
+                ctx.fillRect(x, y, squareSize, squareSize);
+                x += squareSize * 2;
+            }
+            row++;
+            y += squareSize;
+        }
+    }
+
+    const animate = (time: number) => {
+        checkers.forEach(({canvas, ctx, squareSize, panSpeed}) => {
+            const patternWidth = squareSize * 2;
+            const rawOffset = ((time / 1000) * panSpeed) % patternWidth;
+            const offset = (rawOffset + patternWidth) % patternWidth;
+            drawCheckerRow(canvas, ctx, squareSize, offset);
+        })
+
+        requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+</script>
+
+
+<style define:vars={{height}}>
+    canvas {
+        width: 100%;
+        height: var(--height);
+        display: block;
+    }
+</style>
