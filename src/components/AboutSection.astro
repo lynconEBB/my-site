@@ -98,13 +98,11 @@ import Halftone from "./Halftone.astro";
         mask-position: center;
         mask-repeat: no-repeat;
     }
-
     .star:nth-child(1) {
         bottom: -50px;
-        left: 50px;
+        left: 30px;
         transform: rotateZ(-55deg);
     }
-
     .star:nth-child(2) {
         top: -30px;
         right: 0;
@@ -125,6 +123,7 @@ import Halftone from "./Halftone.astro";
         min-width: 0;
     }
     .detail {
+        overflow: hidden;
         height: 300px;
         position: relative;
     }
@@ -132,6 +131,13 @@ import Halftone from "./Halftone.astro";
         .star {
             width: 250px;
             height: 250px;
+        }
+        .star:nth-child(1) {
+            bottom: 0;
+        }
+
+        .star:nth-child(2) {
+            top: 0;
         }
         .container {
             flex-direction: column;
@@ -152,11 +158,11 @@ import Halftone from "./Halftone.astro";
         position: relative;
     }
     .heading h1 {
-        font-family: var(--font-anton),sans-serif;
+        font-family: var(--font-anton), sans-serif;
         margin: 0 0 -5px;
     }
     p {
-        font-family: "sans-serif";
+        font-family: sans-serif;
     }
     .custom-divider {
         display: block;
