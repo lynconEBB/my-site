@@ -17,8 +17,22 @@ import Footer from "../components/Footer.astro";
 		<title>Techlyn</title>
 	</head>
 	<body>
-		<NavBar/>
-		<slot />
+		<header class="landing">
+			<NavBar/>
+			<slot name="hero"/>
+		</header>
+		<main>
+			<slot />
+		</main>
 		<Footer/>
 	</body>
 </html>
+
+<style>
+	.landing {
+		height: 100vh;
+		min-height: 480px;
+		display: flex;
+		flex-direction: column;
+	}
+</style>
