@@ -4,13 +4,17 @@ import ballon from "../assets/ballon.svg"
 
 <div class="hero">
     <h1>LYNCON BAEZ</h1>
-    <img src={ballon.src}/>
+    <div class="subtitle">
+        <img src={ballon.src}/>
+        <span>Full-stack developer</span>
+    </div>
 </div>
 
 <style>
     .hero {
         flex: 1;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
     }
@@ -23,5 +27,24 @@ import ballon from "../assets/ballon.svg"
         font-weight: lighter;
         color: white;
         font-family: var(--font-anton), sans-serif;
+    }
+    .subtitle {
+        position: relative;
+        margin-top: -2.5rem;
+        margin-right: -5rem;
+        top: 0;
+        width: 400px;
+    }
+    .subtitle img {
+        width: 100%;
+    }
+    .subtitle span {
+        font-family: var(--font-oxanium);
+        font-weight: bold;
+        position: absolute;
+        font-size: 2rem;
+        left: 35px;
+        bottom: 35px;
+        transform: rotateZ(-8deg);
     }
 </style>
