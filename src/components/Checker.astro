@@ -3,18 +3,24 @@ interface Props {
     squareSize?: number;
     panSpeed?: number;
     height?: string;
+    backgroundColor?: string;
+    checkerColor?: string;
 }
 
 const {
     squareSize = 10,
     panSpeed = 0,
-    height = "20px"
+    height = "20px",
+    backgroundColor = "#ff2e97",
+    checkerColor = "black"
 } = Astro.props;
 ---
 
 <canvas class="checker-effect"
         data-square-size={squareSize}
-        data-pan-speed={panSpeed}>
+        data-pan-speed={panSpeed}
+        data-background-color={backgroundColor}
+        data-checker-color={checkerColor}>
 </canvas>
 
 <script>
@@ -29,6 +35,8 @@ const {
                 ctx,
                 squareSize: Number(canvas.dataset.squareSize) || 10,
                 panSpeed: Number(canvas.dataset.panSpeed) || 0,
+                backgroundColor: canvas.dataset.backgroundColor || "#ff2e97",
+                checkerColor: canvas.dataset.checkerColor || "black",
             }]
         });
 
@@ -40,11 +48,11 @@ const {
         resizeObserver.observe(canvas);
     });
 
-    const drawCheckerRow = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, squareSize: number, offset: number ) => {
-        ctx.fillStyle = "#ff2e97";
+    const drawCheckerRow = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, squareSize: number, offset: number, backgroundColor: string, checkerColor: string) => {
+        ctx.fillStyle = backgroundColor;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.fillStyle = "black";
+        ctx.fillStyle = checkerColor;
         let y = 0;
         let row = 0;
         while (y < ctx.canvas.height) {
@@ -59,11 +67,11 @@ const {
     }
 
     const animate = (time: number) => {
-        checkers.forEach(({canvas, ctx, squareSize, panSpeed}) => {
+        checkers.forEach(({canvas, ctx, squareSize, panSpeed, backgroundColor, checkerColor}) => {
             const patternWidth = squareSize * 2;
             const rawOffset = ((time / 1000) * panSpeed) % patternWidth;
             const offset = (rawOffset + patternWidth) % patternWidth;
-            drawCheckerRow(canvas, ctx, squareSize, offset);
+            drawCheckerRow(canvas, ctx, squareSize, offset, backgroundColor, checkerColor);
         })
 
         requestAnimationFrame(animate);

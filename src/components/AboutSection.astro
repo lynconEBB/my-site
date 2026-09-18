@@ -1,7 +1,6 @@
 ---
-import Checker from "./Checker.astro";
-import star from "../assets/star.svg";
 import Halftone from "./Halftone.astro";
+import Heading from "./Heading.astro";
 ---
 
 <script>
@@ -68,10 +67,7 @@ import Halftone from "./Halftone.astro";
     <canvas class="custom-divider"></canvas>
     <div class="container">
         <div class="col">
-            <div class="heading">
-                <h1>About me</h1>
-                <Checker squareSize={5} height="10px"/>
-            </div>
+            <Heading text="About me"/>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec  condimentum erat. Vivamus interdum lobortis malesuada. Morbi lacinia  arcu ac lectus commodo, at viverra dui pretium. Cras iaculis lorem  aliquam auctor molestie. Vestibulum accumsan dignissim imperdiet.</p>
         </div>
         <div class="col detail">
@@ -152,14 +148,6 @@ import Halftone from "./Halftone.astro";
             width: 150px;
             height: 250px;
         }
-    }
-    .heading {
-        display: inline-block;
-        position: relative;
-    }
-    .heading h1 {
-        font-family: var(--font-anton), sans-serif;
-        margin: 0 0 -5px;
     }
     p {
         font-family: sans-serif;

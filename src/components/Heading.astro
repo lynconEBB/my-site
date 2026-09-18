@@ -1,0 +1,35 @@
+---
+import Checker from "./Checker.astro";
+
+interface Props {
+    text: string;
+    variant?: "light" | "dark";
+}
+
+const { 
+    text,
+    variant = "dark"
+} = Astro.props;
+---
+
+<div class:list={["heading", variant]}>
+    <h1>{text}</h1>
+    <Checker squareSize={5} height="10px" checkerColor={variant === "light" ? "#ff2e97" : undefined} backgroundColor={variant === "light" ? "#B5FD14" : undefined} />
+</div>
+
+<style>
+    .heading {
+        display: inline-block;
+        position: relative;
+    }
+    .heading h1 {
+        font-family: var(--font-anton), sans-serif;
+        margin: 0 0 -5px;
+    }
+    .heading.light h1 {
+        color: white;
+    }
+    .heading.dark h1 {
+        color: black;
+    }
+</style>

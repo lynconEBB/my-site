@@ -1,5 +1,4 @@
 ---
-import Heading from "./Heading.astro";
 import ProjectItem from "./ProjectItem.astro"
 ---
 
@@ -7,21 +6,6 @@ import ProjectItem from "./ProjectItem.astro"
     <div class="filler"></div>
     <div class="first"></div>
     <div class="main-container">
-        <div class="col">
-            <div class="skewed">
-                <ProjectItem />
-                <ProjectItem />
-                <ProjectItem />
-            </div>
-        </div>
-        <div class="col">
-            <Heading text="Projects" variant="light"/>
-            <div class="skewed">
-                <ProjectItem />
-                <ProjectItem />
-                <ProjectItem />
-            </div>
-        </div>
         <div class="col">
             <div class="skewed">
                 <ProjectItem />
@@ -73,10 +57,10 @@ import ProjectItem from "./ProjectItem.astro"
         height: 100%;
     }
     .skewed {
-        margin-top: 20px;
         width: 100%;
         height: 100%;
         padding: 20px;
+        background-color: aqua;
         overflow-y: scroll;
         overflow-x: hidden;
         transform: skewX(20deg);
