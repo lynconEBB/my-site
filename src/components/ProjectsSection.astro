@@ -6,23 +6,25 @@ import ProjectItem from "./ProjectItem.astro"
 <div class="container">
     <div class="filler"></div>
     <div class="first"></div>
-    <div class="main-container">
-        <div class="col">
+    <div class="main-container" data-project-columns>
+        <div class="col" data-project-column>
             <div class="skewed">
                 <ProjectItem />
                 <ProjectItem />
                 <ProjectItem />
             </div>
         </div>
-        <div class="col">
-            <Heading text="Projects" variant="light"/>
+        <div class="col" data-project-column>
+            <div class="heading-container">
+                <Heading text="Projects" variant="light" class="custom-heading"/>
+            </div>
             <div class="skewed">
                 <ProjectItem />
                 <ProjectItem />
                 <ProjectItem />
             </div>
         </div>
-        <div class="col">
+        <div class="col" data-project-column>
             <div class="skewed">
                 <ProjectItem />
                 <ProjectItem />
@@ -34,10 +36,48 @@ import ProjectItem from "./ProjectItem.astro"
     <div class="filler"></div>
 </div>
 
+<script>
+    const projectSections = document.querySelectorAll("[data-project-columns]");
+
+    projectSections.forEach((section) => {
+        const columns = Array.from(section.querySelectorAll<HTMLElement>("[data-project-column]"));
+        const lists = columns.map((column) => column.querySelector<HTMLElement>(".skewed"));
+
+        if (columns.length !== 3 || lists.some((list) => !list)) return;
+
+        const projectLists = lists as HTMLElement[];
+        const originalItems = projectLists.map((list) => Array.from(list.children));
+        const allItems = originalItems.flat();
+        const below1500 = window.matchMedia("(max-width: 1499px)");
+        const below1100 = window.matchMedia("(max-width: 1099px)");
+
+        const updateColumns = () => {
+            if (!below1500.matches) {
+                columns.forEach((column) => column.hidden = false);
+                originalItems.forEach((items, index) => projectLists[index].append(...items));
+                return;
+            }
+
+            const visibleIndexes = below1100.matches ? [1] : [1, 2];
+            columns.forEach((column, index) => column.hidden = !visibleIndexes.includes(index));
+
+            allItems.forEach((item, index) => {
+                const listIndex = visibleIndexes[index % visibleIndexes.length];
+                projectLists[listIndex].append(item);
+            });
+        };
+
+        below1500.addEventListener("change", updateColumns);
+        below1100.addEventListener("change", updateColumns);
+        updateColumns();
+    });
+
+</script>
+
 <style>
     .container {
         margin-top:50px;
-        height: 550px;
+        height: 600px;
         display: flex;
         flex-direction: row;
     }
@@ -45,40 +85,81 @@ import ProjectItem from "./ProjectItem.astro"
         flex: 0 0 170px;
         background-color: #ff2e97;
         clip-path: polygon(0 0,0 0, 100% 100%, 0 100%);
-        margin: 40px 0;
+        margin: 90px 0;
     }
     .last {
         flex: 0 0 170px;
         background-color: #ff2e97;
-        margin: 40px 0;
+        margin: 90px 0;
         clip-path: polygon(0 0,100% 0, 100% 100%, 100% 100%);
     }
     .filler {
-        margin: 40px 0;
+        margin: 90px 0;
         background-color: #ff2e97;
         flex: 1 0 0;
         box-sizing: border-box;
     }
     .main-container {
-        flex: 0 1 1000px;
+        flex: 0 1 1200px;
         display: flex;
-        max-width: 1000px;
+        max-width: 1200px;
         flex-direction: row;
         margin-inline: -20px;
+        box-sizing: border-box;
         align-items: center;
         gap: 10px;
+        min-width: 0;
     }
     .col {
         width: 100%;
         height: 100%;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        min-height: 0;
+    }
+    .col[hidden] {
+        display: none;
+    }
+    .heading-container {
+        box-sizing: border-box;
+        width: 100%;
+    }
+    .custom-heading {
+        align-self: flex-start;
+        margin-bottom: 20px;
     }
     .skewed {
-        margin-top: 20px;
+        box-sizing: border-box;
         width: 100%;
-        height: 100%;
+        min-height: 0;
+        flex: 1;
         padding: 20px;
         overflow-y: scroll;
         overflow-x: hidden;
         transform: skewX(20deg);
+    }
+    @media (min-width: 1500px) {
+        .skewed:nth-child(2) {
+            margin-left:20px;
+        }
+    }
+    @media (max-width: 720px ) {
+        .container {
+            overflow-x: clip;
+        }
+        .skewed {
+            margin-left: 10px;
+            transform: skewX(14deg);
+        }
+        .main-container {
+            margin-inline: -52px -48px;
+        }
+        .first {
+            flex: 0 0 100px;
+        }
+        .last {
+            flex: 0 0 100px;
+        }
     }
 </style>

@@ -1,18 +1,21 @@
 ---
 import Checker from "./Checker.astro";
+import type { HTMLAttributes } from "astro/types";
 
-interface Props {
+interface Props extends HTMLAttributes<"div"> {
     text: string;
     variant?: "light" | "dark";
 }
 
 const { 
     text,
-    variant = "dark"
+    variant = "dark",
+    class: className,
+    ...attributes
 } = Astro.props;
 ---
 
-<div class:list={["heading", variant]}>
+<div {...attributes} class:list={["heading", variant, className]}>
     <h1>{text}</h1>
     <Checker squareSize={5} height="10px" checkerColor={variant === "light" ? "#ff2e97" : undefined} backgroundColor={variant === "light" ? "#B5FD14" : undefined} />
 </div>
@@ -24,6 +27,7 @@ const {
     }
     .heading h1 {
         font-family: var(--font-anton), sans-serif;
+        font-size: 3rem;
         margin: 0 0 -5px;
     }
     .heading.light h1 {

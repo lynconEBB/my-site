@@ -45,10 +45,17 @@ import sreImage from "../assets/images/sre.png";
         margin: 10px 0 0 50px;
     }
     .item-description {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
         font-size: 1rem;
         font-weight: normal;
         font-family: sans-serif;
-        margin: 0 50px;
+        margin-top:0;
+        margin-bottom: 0;
+        margin-left: 70px;
+        margin-right: 20px;
     }
     .image-container {
         margin-left: 30px;
@@ -62,5 +69,24 @@ import sreImage from "../assets/images/sre.png";
     .image-container .item-img {
         width: calc(100% - 15px);
         height: calc(100% - 15px);
+    }
+    @media (max-width: 720px ) {
+        .item-content {
+            transform: skewX(-14deg);
+        }
+        .item {
+            clip-path: polygon(0 35px, 31px 35px, 40px 0, 204px 5px, 193px 35px, 100% 30px, calc(100% - 7px) calc(100% - 5px), 6px 100%);
+        }
+        .image-container {
+            margin-left: 12px;
+            width: 150px;
+            height: 100px;
+        }
+        .item-title {
+            margin-left: 30px;
+        }
+        .item-description {
+            margin-left: 50px;
+        }
     }
 </style>
