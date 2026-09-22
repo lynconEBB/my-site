@@ -1,13 +1,119 @@
 ---
-
+import LinkedInIcon from "../assets/linkedin.svg";
+import GithubIcon from "../assets/github.svg";
+import MailIcon from "../assets/mail.svg";
 ---
 
 <footer>
-
+    <div class="divider">
+        <div class="start"></div>
+        <hr>
+        <div class="end"></div>
+    </div>
+    <div class="content">
+        <div class="copy">
+            <p>Copyright © 2026 <b>Lyncon Baez</b>. All Rights Reserved.</p>
+            <p>Made with Astro</p>
+        </div>
+        <div class="social">
+            <a href="https://www.linkedin.com/in/lyncon-baez/">
+                <LinkedInIcon aria-hidden="true" class="social-icon"/>
+                Linkedin
+            </a>
+            <a href="https://github.com/lynconEBB">
+                <GithubIcon aria-hidden="true" class="social-icon"/>
+                Github
+            </a>
+            <a href="mailto:lynconlyn@gmail.com">
+                <MailIcon aria-hidden="true" class="social-icon"/>
+                E-mail
+            </a>
+        </div>
+    </div>
 </footer>
 
 <style>
     footer {
-        height: 200px;
+        margin: 0 20px;
+    }
+    .divider {
+        position: relative;
+    }
+    .start {
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: -3px;
+        background-color: #B5FD14;
+    }
+    .end {
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        right: 0;
+        top: -3px;
+        background-color: #B5FD14;
+    }
+    hr {
+        color: #ff2e97;
+        border-width: 1px;
+        border-style: solid;
+    }
+    .content {
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .copy {
+        display: flex;
+        flex-direction: column;
+        color: white;
+        font-family: sans-serif;
+    }
+    .copy p {
+        margin: 3px 0;
+    }
+    .social {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .social a {
+        margin-left: 20px;
+        display: flex;
+        align-items: center;
+        gap: 5;
+        color: #ff2e97;
+        font-family: sans-serif;
+        font-weight: bold;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
+        transition: text-underline-offset 200ms ease-in-out;
+    }
+    .social a:hover {
+        cursor: pointer;
+        text-underline-offset: 6px;
+    }
+    .social-icon {
+        width: 30px;
+    }
+    @media (max-width: 830px) {
+        .copy {
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .copy p {
+            text-align: center;
+        }
+        .content {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .social {
+            align-items: center;
+            justify-content: center;
+        }
     }
 </style>

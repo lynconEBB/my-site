@@ -1,6 +1,16 @@
 ---
+import { getCollection, type CollectionEntry } from "astro:content";
 import Heading from "./Heading.astro";
-import ProjectItem from "./ProjectItem.astro"
+import ProjectItem from "./ProjectItem.astro";
+
+const projects = (await getCollection("projects")).sort(
+    (a, b) => a.data.order - b.data.order,
+);
+const projectColumns: CollectionEntry<"projects">[][] = [[], [], []];
+
+projects.forEach((project, index) => {
+    projectColumns[index % projectColumns.length].push(project);
+});
 ---
 
 <div class="container">
@@ -9,9 +19,7 @@ import ProjectItem from "./ProjectItem.astro"
     <div class="main-container" data-project-columns>
         <div class="col" data-project-column>
             <div class="skewed">
-                <ProjectItem />
-                <ProjectItem />
-                <ProjectItem />
+                {projectColumns[0].map((project) => <ProjectItem project={project} />)}
             </div>
         </div>
         <div class="col" data-project-column>
@@ -19,16 +27,12 @@ import ProjectItem from "./ProjectItem.astro"
                 <Heading text="Projects" variant="light" class="custom-heading"/>
             </div>
             <div class="skewed">
-                <ProjectItem />
-                <ProjectItem />
-                <ProjectItem />
+                {projectColumns[1].map((project) => <ProjectItem project={project} />)}
             </div>
         </div>
         <div class="col" data-project-column>
             <div class="skewed">
-                <ProjectItem />
-                <ProjectItem />
-                <ProjectItem />
+                {projectColumns[2].map((project) => <ProjectItem project={project} />)}
             </div>
         </div>
     </div>
@@ -149,7 +153,7 @@ import ProjectItem from "./ProjectItem.astro"
             overflow-x: clip;
         }
         .skewed {
-            margin-left: 10px;
+            margin-left: 15px;
             transform: skewX(14deg);
         }
         .main-container {
